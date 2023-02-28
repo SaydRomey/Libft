@@ -11,9 +11,13 @@
 # **************************************************************************** #
 
 NAME = libft.a
+
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-LIBC = ar rcs
+
+LIBC = ar -rcs
+
+REMOVE  = rm -f
 
 SRC =       ft_atoi.c\
 			ft_bzero.c\
@@ -50,6 +54,8 @@ SRC =       ft_atoi.c\
 			ft_putendl_fd.c\
 			ft_putnbr_fd.c
 
+OBJS    	= $(SRC:.c=.o)
+
 BONUS =     ft_lstnew.c\
 			ft_lstadd_front.c\
 			ft_lstsize.c\
@@ -60,37 +66,34 @@ BONUS =     ft_lstnew.c\
 			ft_lstiter.c\
 			ft_lstmap.c
 
-OBJS    = $(SRC:.c=.o)
-BONUS_OBJS = $(BONUS:.c=.o)
+BONUS_OBJS 	= $(BONUS:.c=.o)
 
-%.o : %.c
-		$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
+.c.o:
+			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 
-REMOVE  = rm -f
+all: 		$(NAME)
 
+$(NAME):	$(OBJS)
+			@$(LIBC) $(NAME) $(OBJS)
 
-all: $(NAME)
+bonus: 		$(OBJS) $(BONUS_OBJS)
+			@$(LIBC) $(NAME) $(OBJS) $(BONUS_OBJS)
 
-$(NAME): $(OBJS)
-		$(LIBC) $(NAME) $(OBJS)
-
-bonus: $(OBJS) $(BONUS_OBJS)
-		$(LIBC) $(NAME) $(OBJS) $(BONUS_OBJS)
 clean:
-		$(REMOVE) $(OBJS) $(BONUS_OBJS)
+			$(REMOVE) $(OBJS) $(BONUS_OBJS)
 
-fclean: clean
-		$(REMOVE) $(NAME)
+fclean: 	clean
+			$(REMOVE) $(NAME)
 
-vclean: fclean
-		$(REMOVE) $(filter-out Makefile libft.h, $(wildcard *[!.c]))
+vclean: 	fclean
+			$(REMOVE) $(filter-out Makefile libft.h, $(wildcard *[!.c]))
 
-re: fclean all
+re: 		fclean all
 
-rebonus: fclean bonus
+rebonus:	fclean bonus
 
 norm:
-	norminette -R CheckForbiddenSourceHeader *.c
-	norminette -R CheckDefine *.h
+			norminette -R CheckForbiddenSourceHeader *.c
+			norminette -R CheckDefine *.h
 
 .PHONY: all bonus clean fclean vclean re rebonus
