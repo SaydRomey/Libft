@@ -1,0 +1,212 @@
+
+Make a separate file with explanations and main testers (all in one)?
+check cmake and google test  ?;
+
+	https://google.github.io/googletest/quickstart-cmake.html 
+
+
+
+*!!remove includes “whatevs.c” (when make, won’t need them)
+*!!verify variable names are logical
+*!! remove info before eval
+
+Makefile
+
+*!!add in makefile remove all “\\” and create executable folder??
+	(for one at a time..)
+
+
+–personnal or test? to add–
+
+ft_malloc?
+
+–Sorting algorithms–
+
+swap nodes, bubble sort, bubble sort for elements of an array,
+
+-data structure-
+
+
+
+...
+
+libft.h
+
+	ok, maybe order functions by type with comments?
+
+isalpha
+	ok
+isdigit
+	ok
+isalnum
+	ok
+isascii
+	ok 
+isprint
+	ok 
+strlen
+	ok 
+memset
+	ok
+bzero
+	ok / (test in terminal)
+memcpy
+	ok
+memove
+	ok
+strlcpy
+	ok 
+strlcat
+	ok
+toupper
+	ok
+tolower
+	ok
+strchr
+	ok
+strrchr
+	ok
+
+strncmp
+	ok
+
+memchr
+	ok 
+memcmp
+	ok
+strnstr
+	ok
+atoi
+	ok
+calloc
+	ok
+strdup
+	ok
+
+
+–additional–
+
+
+ft_substr
+	ok 
+
+ft_strjoin
+	ok
+
+ft_strtrim
+	ok
+
+ft_split
+	ok 
+
+(shorter alt version)
+
+#include "libft.h"
+
+static void    ft_allocate(char **tab, char const *s, char sep)
+{
+    char   	 **tab_p;
+    char const    *tmp;
+
+    tmp = s;
+    tab_p = tab;
+    while (*tmp)
+    {
+   	 while (*s == sep)
+   		 ++s;
+   	 tmp = s;
+   	 while (*tmp && *tmp != sep)
+   		 ++tmp;
+   	 if (*tmp == sep || tmp > s)
+   	 {
+   		 *tab_p = ft_substr(s, 0, tmp - s);
+   		 s = tmp;
+   		 ++tab_p;
+   	 }
+    }
+    *tab_p = NULL;
+}
+
+static int    ft_count_words(char const *s, char sep)
+{
+    int    word_count;
+
+    word_count = 0;
+    while (*s)
+    {
+   	 while (*s == sep)
+   		 ++s;
+   	 if (*s)
+   		 ++word_count;
+   	 while (*s && *s != sep)
+   		 ++s;
+    }
+    return (word_count);
+}
+
+char    **ft_split(char const *s, char c)
+{
+    char    **new;
+    int   	 size;
+
+    if (!s)
+   	 return (NULL);
+    size = ft_count_words(s, c);
+    new = (char **)malloc(sizeof(char *) * (size + 1));
+    if (!new)
+   	 return (NULL);
+    ft_allocate(new, s, c);
+    return (new);
+}
+…
+ft_itoa
+	ok
+
+ft_strmapi
+	ok
+
+ft_striteri
+	ok
+
+ft_putchar_fd
+ok
+	
+ft_putstr_fd
+	ok
+
+ft_putendl_fd
+	ok
+	
+ft_putnbr_fd
+	ok
+
+
+–bonus–
+
+
+ft_lstnew
+	ok
+
+ft_lstadd_front 
+	ok
+
+ft_lstsize 
+ 	ok
+
+ft_lstlast
+	ok
+
+ft_lstadd_back
+	ok
+
+ft_lstdelone
+	ok 
+
+ft_lstclear
+	ok
+
+ft_lstiter
+	ok
+
+ft_lstmap
+	ok 
