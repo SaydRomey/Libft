@@ -12,172 +12,132 @@
 
 #include "libft.h"
 
-size_t	word_count(char const *s, char c)
+static void    ft_allocate(char **tab, char const *s, char sep)
 {
-	size_t	i;
-	size_t	count;
+	char		**tab_p;
+	char const	*tmp;
 
-	i = 0;
-	count = 0;
-	if (*s != c)
-		count++;
-	while (*(s + i))
+	tmp = s;
+	tab_p = tab;
+	while (*tmp)
 	{
-		if (*(s + i) == c && *(s + i + 1) != c && *(s + i + 1) != '\0')
-			count++;
-		i++;
+		while (*s == sep)
+   			++s;
+   		tmp = s;
+   		while (*tmp && *tmp != sep)
+   			++tmp;
+   		if (*tmp == sep || tmp > s)
+   		{
+   			*tab_p = ft_substr(s, 0, tmp - s);
+			if (tab_p == NULL)
+			{
+				while (tab_p-- != tab)
+					free(*tab_p);
+				free(tab);
+				return ;
+			}
+   			s = tmp;
+   			++tab_p;
+			free(*tab_p);
+   		}
 	}
-	return (count);
 }
 
-char	*word_maker(char const *s, size_t len)
+static int    ft_count_words(char const *s, char sep)
 {
-	size_t	i;
-	char	*ptr;
+	int    word_count;
 
-	i = 0;
-	ptr = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ptr)
-		return (NULL);
-	while (i < len)
+	word_count = 0;
+	while (*s)
 	{
-		*(ptr + i) = *(s + i);
-		i++;
+   		while (*s == sep)
+   			++s;
+   		if (*s)
+   			++word_count;
+   		while (*s && *s != sep)
+   			++s;
 	}
-	*(ptr + i) = '\0';
-	return (ptr);
+	return (word_count);
 }
 
-char	**ft_free(char **split)
+char    **ft_split(char const *s, char c)
 {
-	int	i;
-
-	i = 0;
-	while (*(split + i))
-	{
-		free(*(split + i));
-		i++;
-	}
-	free(split);
-	return (NULL);
-}
-
-char	**splitter(char **split, const char *s, char c, size_t count)
-{
-	size_t	i;
-	size_t	j;
-	size_t	index;
-
-	i = 0;
-	j = 0;
-	index = -1;
-	while (++index < count)
-	{
-		while (*(s + i))
-		{
-			while (*(s + i) == c)
-				i++;
-			while (*(s + i + j) != c && *(s + i + j) != '\0')
-				j++;
-			*(split + index) = word_maker((s + i), (j));
-			if (!*(split + index))
-				return (ft_free(split));
-			break ;
-		}
-	i = i + j;
-	j = 0;
-	}
-	*(split + index) = NULL;
-	return (split);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**split;
-	size_t	count;
+	char    **new;
+	int   	 size;
 
 	if (!s)
-		return (NULL);
-	count = word_count(s, c);
-	if (count == 0 || ft_strlen(s) == 0)
+   	 return (NULL);
+	size = ft_count_words(s, c);
+	new = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!new)
+   		return (NULL);
+	ft_allocate(new, s, c);
+	if (!*new)
 	{
-		split = (char **)malloc(sizeof(char *));
-		if (!split)
-			return (NULL);
-		*split = NULL;
-		return (split);
-	}
-	split = (char **)malloc((word_count(s, c) + 1) * (sizeof(char *)));
-	if (!split)
+		free(new);
 		return (NULL);
-	split = splitter(split, s, c, count);
-	return (split);
+	}
+	return (new);
 }
 
+// #include "ft_substr.c"
 // #include "ft_strlen.c"
+// #include "ft_calloc.c"
+// #include "ft_bzero.c"
 
 // int	main(void)
 // {
-// 	char	**result;
-// 	char	*str= "Hi! This is a test string";
-// 	char	delim = 'i';
+// 	char	**words;
 // 	int		i;
 
-// 	result = ft_split(str, delim);
-// 	if (!result)
+// 	words = ft_split("Hi!, This is a test string", 'i');
+// 	if (!words)
 // 	{
-// 		printf("NOPE !");
+// 		printf("\nNOPE !\n");
 // 		return (1);
 // 	}
-
 // 	i = 0;
-// 	while (result[i])
+// 	while (words[i])
 // 	{
-// 		printf("%s\n", result[i]);
+// 		printf("%s\n", words[i]);
+// 		free(words[i]);
 // 		i++;
 // 	}
+// 	free(words);
 // 	return (0);
 // }
 
 /*
-allocate with malloc and return array of strings
-	obtained by splitting 's' using the char 'c' as delimiter
-		must end with a NULL pointer.
+ft_count_words : counts number of words in 's'
+	(number of substrings seperated by 'c')
+loops through 's' and increment 'word_count'
+	every time it encounters the beginning of a new word
+		(skips over the seperator char)
 
-s : string to be split
-c : delimiter char
-result : array to be filled with words from input
-w_count : number of words in input string + specific memory for result
+ft_split : allocates an array of pointers 'new'
+	with enough space to hold the number of words 
+		counted by 'ft_count_words'
+each element of 'new' will be a pointer to a substring
 
-call 'ft_count_word' to determine number of word in the input string
-	then use count to allocate memory for array of strings
-		that will be the result.
+ft_allocate : populates the 'new' array with substrings
 
-'ft_count_words' function scans input string and 
-	increment a word count each time it encounters a
-		non-empty sequence of characters that is not seperated
-			by the given character.
+loops through 's' and identifies the beginning and end of each word,
+	based on seperator 's'
+allocates memory for each substring
+	(using 'ft_substr') and
+		copies char from 's' to the new memory location
+			in the 'new' array
+advances 's' to the beginning of the next word,
+	and advances the new memory location in the
+		'new' array
 
-'ft_count_letter' function is used to determine the
-	length of a word in the input string.
-it scans the input string until it encounters the given character
-	or the end of the string, and returns 
-		the number of characters it encountered.
+advances 's' to the beginning of the next word,
+	and the 'new' array pointer to the next element
 
-'ft_word_to_str' function takes a string and a character as input
-	and returns a new string that contains the characters from
-		the input string up to the given character or
-			the end of the string.
-uses the 'ft_count_letter' function to determine 
-	the length of the word in the input string.
+when all substrings are copied into 'new',
+	adds a NULL pointer at the end of the array
+		to mark the end of the list of substrings
 
-'ft_words_to_arr' function is used to populate the result array
-	with the words from the input string.
-calls the 'ft_word_to_str' function to get each word
-	and assigns the resulting string to an element
-		in the result array.
-
-returns the result array.
-
-If any memory allocation fails, function returns NULL
+returns the 'new' array, wich now contains pointers to
+	each of the substrings
 */
