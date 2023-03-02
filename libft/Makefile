@@ -70,14 +70,13 @@ BONUS_OBJS 	= $(BONUS:.c=.o)
 
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
-
+			$(LIBC) $(NAME) $@
 all: 		$(NAME)
 
 $(NAME):	$(OBJS)
 			@$(LIBC) $(NAME) $(OBJS)
 
 bonus: 		$(OBJS) $(BONUS_OBJS)
-			@$(LIBC) $(NAME) $(OBJS) $(BONUS_OBJS)
 
 clean:
 			$(REMOVE) $(OBJS) $(BONUS_OBJS)
