@@ -71,6 +71,7 @@ BONUS_OBJS 	= $(BONUS:.c=.o)
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 			$(LIBC) $(NAME) $@
+
 all: 		$(NAME)
 
 $(NAME):	$(OBJS)
