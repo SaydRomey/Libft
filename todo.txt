@@ -7,13 +7,13 @@ check cmake and google test  ?;
 
 
 *!!remove includes “whatevs.c” (when make, won’t need them)
-*!!verify variable names are logical
-*!! remove info before eval
 
 Makefile
 
 *!!add in makefile remove all “\\” and create executable folder??
 	(for one at a time..)
+(not nec, if single main tester)
+	(put link to main tester in my github as a comment in Makefile?)
 
 
 –personnal or test? to add–
@@ -99,7 +99,7 @@ ft_strtrim
 ft_split
 	ok 
 
-(shorter alt version)
+(shorter alt version)(fix leaks?)
 
 #include "libft.h"
 
