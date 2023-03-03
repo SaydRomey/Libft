@@ -10,19 +10,19 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME		= libft.a
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CC			= gcc
+CFLAGS		= -Wall -Wextra -Werror
 
-LIBC = ar -rcs
+LIBC		= ar -rcs
 
-REMOVE  = rm -f
+REMOVE		= rm -f
 
-GREEN = \033[32m
-STDCLR = \033[0m
+GREEN		= \033[32m
+CLRCLR		= \033[0m
 
-SRC =       ft_atoi.c\
+SRC	=		ft_atoi.c\
 			ft_bzero.c\
 			ft_calloc.c\
 			ft_isalnum.c\
@@ -57,9 +57,9 @@ SRC =       ft_atoi.c\
 			ft_putendl_fd.c\
 			ft_putnbr_fd.c
 
-OBJS    	= $(SRC:.c=.o)
+OBJS		= $(SRC:.c=.o)
 
-BONUS =     ft_lstnew.c\
+BONUS =		ft_lstnew.c\
 			ft_lstadd_front.c\
 			ft_lstsize.c\
 			ft_lstlast.c\
@@ -69,49 +69,49 @@ BONUS =     ft_lstnew.c\
 			ft_lstiter.c\
 			ft_lstmap.c
 
-BONUS_OBJS 	= $(BONUS:.c=.o)
+BONUS_OBJS	= $(BONUS:.c=.o)
 
 .c.o:
 			$(CC) $(CFLAGS) -c $< -o $(<:.c=.o)
 			$(LIBC) $(NAME) $@
 
 all: 		$(NAME)
-			@echo "$(GREEN)Object files compiled$(STDCLR)"
+			@echo "$(GREEN)Object files compiled$(CLRCLR)"
 
 $(NAME):	$(OBJS)
 			$(LIBC) $(NAME) $(OBJS)
 
-bonus: 		$(OBJS) $(BONUS_OBJS)
-			@echo "$(GREEN)All object files compiled$(STDCLR)"
+bonus:		$(OBJS) $(BONUS_OBJS)
+			@echo "$(GREEN)All object files compiled$(CLRCLR)"
 
 clean:
 			$(eval REMOVED := $(wildcard $(OBJS) $(BONUS_OBJS)))
 			@if [ -n "$(REMOVED)" ]; then \
 				$(REMOVE) $(REMOVED); \
-				echo "$(GREEN)Removed object files: $(STDCLR) $(REMOVED)"; \
+				echo "$(GREEN)Removed object files: $(CLRCLR) $(REMOVED)"; \
 			else \
-				echo "$(GREEN)No object files to clean$(STDCLR)"; \
+				echo "$(GREEN)No object files to clean$(CLRCLR)"; \
 			fi;
 
-fclean: 	clean
+fclean:		clean
 			$(eval NONAME := $(wildcard $(NAME)))
 			@if [ -n "$(NONAME)" ]; then \
 				$(REMOVE) $(NONAME); \
-				echo "$(GREEN)Removed archive library: $(STDCLR) $(NONAME)"; \
+				echo "$(GREEN)Removed archive library: $(CLRCLR) $(NONAME)"; \
 			else \
-				echo "$(GREEN)Archive library already removed$(STDCLR)"; \
+				echo "$(GREEN)Archive library already removed$(CLRCLR)"; \
 			fi;
 
-vclean: 	fclean
+vclean:		fclean
 			$(eval NOMISC :=$(filter-out Makefile libft.h, $(wildcard *[!.c])))
 			@if [ -n "$(NOMISC)" ]; then \
 				$(REMOVE) $(NOMISC); \
-				echo "$(GREEN)Cleaned up: $(STDCLR) $(NOMISC)"; \
+				echo "$(GREEN)Cleaned up: $(CLRCLR) $(NOMISC)"; \
 			else \
-				echo "$(GREEN)All cleaned up !$(STDCLR)"; \
+				echo "$(GREEN)All cleaned up !$(CLRCLR)"; \
 			fi;
 
-re: 		fclean all
+re:			fclean all
 
 rebonus:	fclean bonus
 
@@ -119,4 +119,4 @@ norm:
 			norminette -R CheckForbiddenSourceHeader *.c
 			norminette -R CheckDefine *.h
 
-.PHONY: all bonus clean fclean vclean re rebonus
+.PHONY:		all bonus clean fclean vclean re rebonus
