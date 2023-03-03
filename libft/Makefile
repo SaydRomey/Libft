@@ -19,6 +19,9 @@ LIBC = ar -rcs
 
 REMOVE  = rm -f
 
+GREEN = \033[32m
+STDCLR = \033[0m
+
 SRC =       ft_atoi.c\
 			ft_bzero.c\
 			ft_calloc.c\
@@ -73,20 +76,68 @@ BONUS_OBJS 	= $(BONUS:.c=.o)
 			$(LIBC) $(NAME) $@
 
 all: 		$(NAME)
+			@echo "$(GREEN)Object files compiled$(STDCLR)"
 
 $(NAME):	$(OBJS)
-			@$(LIBC) $(NAME) $(OBJS)
+			$(LIBC) $(NAME) $(OBJS)
 
 bonus: 		$(OBJS) $(BONUS_OBJS)
+			@echo "$(GREEN)All object files compiled$(STDCLR)"
 
 clean:
-			$(REMOVE) $(OBJS) $(BONUS_OBJS)
+			$(eval REMOVED := $(wildcard $(OBJS) $(BONUS_OBJS)))
+			@if [ -n "$(REMOVED)" ]; then \
+				$(REMOVE) $(REMOVED); \
+				echo "$(GREEN)Removed object files: $(STDCLR) $(REMOVED)"; \
+			else \
+				echo "$(GREEN)No object files to clean$(STDCLR)"; \
+			fi;
 
 fclean: 	clean
-			$(REMOVE) $(NAME)
+			$(eval NONAME := $(wildcard $(NAME)))
+			@if [ -n "$(NONAME)" ]; then \
+				$(REMOVE) $(NONAME); \
+				echo "$(GREEN)Removed archive library: $(STDCLR) $(NONAME)"; \
+			else \
+				echo "$(GREEN)Archive library already removed$(STDCLR)"; \
+			fi;
 
 vclean: 	fclean
-			$(REMOVE) $(filter-out Makefile libft.h, $(wildcard *[!.c]))
+			$(eval NOMISC :=$(filter-out Makefile libft.h, $(wildcard *[!.c])))
+			@if [ -n "$(NOMISC)" ]; then \
+				$(REMOVE) $(NOMISC); \
+				echo "$(GREEN)Cleaned up: $(STDCLR) $(NOMISC)"; \
+			else \
+				echo "$(GREEN)All cleaned up !$(STDCLR)"; \
+			fi;
+
+re: 		fclean all
+
+rebonus:	fclean bonus
+
+norm:
+			norminette -R CheckForbiddenSourceHeader *.c
+			norminette -R CheckDefine *.h
+
+.PHONY: all bonus clean fclean vclean re rebonus
+
+fclean: 	clean
+			$(eval NONAME := $(wildcard $(NAME)))
+			@if [ -n "$(NONAME)" ]; then \
+				$(REMOVE) $(NONAME); \
+				echo "$(GREEN)Removed archive library: $(STDCLR) $(NONAME)"; \
+			else \
+				echo "$(GREEN)Archive library already removed$(STDCLR)"; \
+			fi;
+
+vclean: 	fclean
+			$(eval NOMISC :=$(filter-out Makefile libft.h, $(wildcard *[!.c])))
+			@if [ -n "$(NOMISC)" ]; then \
+				$(REMOVE) $(NOMISC); \
+				echo "$(GREEN)Cleaned up: $(STDCLR) $(NOMISC)"; \
+			else \
+				echo "$(GREEN)All cleaned up !$(STDCLR)"; \
+			fi;
 
 re: 		fclean all
 
