@@ -120,31 +120,3 @@ norm:
 			norminette -R CheckDefine *.h
 
 .PHONY: all bonus clean fclean vclean re rebonus
-
-fclean: 	clean
-			$(eval NONAME := $(wildcard $(NAME)))
-			@if [ -n "$(NONAME)" ]; then \
-				$(REMOVE) $(NONAME); \
-				echo "$(GREEN)Removed archive library: $(STDCLR) $(NONAME)"; \
-			else \
-				echo "$(GREEN)Archive library already removed$(STDCLR)"; \
-			fi;
-
-vclean: 	fclean
-			$(eval NOMISC :=$(filter-out Makefile libft.h, $(wildcard *[!.c])))
-			@if [ -n "$(NOMISC)" ]; then \
-				$(REMOVE) $(NOMISC); \
-				echo "$(GREEN)Cleaned up: $(STDCLR) $(NOMISC)"; \
-			else \
-				echo "$(GREEN)All cleaned up !$(STDCLR)"; \
-			fi;
-
-re: 		fclean all
-
-rebonus:	fclean bonus
-
-norm:
-			norminette -R CheckForbiddenSourceHeader *.c
-			norminette -R CheckDefine *.h
-
-.PHONY: all bonus clean fclean vclean re rebonus
