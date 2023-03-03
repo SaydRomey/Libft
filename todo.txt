@@ -10,6 +10,8 @@ check cmake and google test  ?;
 
 Makefile
 
+*!! Check if and why wildcards are not allowed in Makefile
+
 *!!add in makefile remove all “\\” and create executable folder??
 	(for one at a time..)
 (not nec, if single main tester)
