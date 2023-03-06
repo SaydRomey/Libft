@@ -20,7 +20,9 @@ Makefile
 
 –personnal or test? to add–
 
-ft_malloc?
+*! check in Ctest
+
+ft_malloc? (test with a buffer)
 
 –Sorting algorithms–
 
@@ -33,6 +35,9 @@ swap nodes, bubble sort, bubble sort for elements of an array,
 ...
 
 libft.h
+		*!!! take care of possible segfault with all functions (check pointers to return 0 or null)
+		
+		make comments info shorter, more concise..
 
 	ok, maybe order functions by type with comments?
 
