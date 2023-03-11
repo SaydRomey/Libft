@@ -1,5 +1,7 @@
 
-Make a separate file with explanations and main testers (all in one)?
+Make a separate file with explanations 
+
+and do a main testers (all in one)?
 check cmake and google test  ?;
 
 	https://google.github.io/googletest/quickstart-cmake.html 
@@ -9,6 +11,9 @@ check cmake and google test  ?;
 *!!remove includes “whatevs.c” (when make, won’t need them)
 
 Makefile
+
+create bin/ folder for executables
+and src folder for .c files
 
 *!! Check if and why wildcards are not allowed in Makefile
 
